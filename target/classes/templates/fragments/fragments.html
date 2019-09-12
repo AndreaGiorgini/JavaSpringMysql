@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>::Gerenciador de Tarefas</title>
+		<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+	</head>
+	<body>
+	<!-- cabecalho deslogado -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="cabecalhoDeslogado">
+			<a class="navbar-brand" href="#">Gerenciador de Tarefas</a>
+		</nav>
+	<!-- cabecalho logado -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="cabecalho">
+			<a class="navbar-brand" href="#">Gerenciador de Tarefas</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbar-app">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbar-app">
+				<div class="navbar-nav">
+					<a class="nav-item nav-link" href="/">Home</a>
+					<a class="nav-item nav-link" href="/tarefas/listar">Lista de Tarefas</a>
+					<a class="nav-item nav-link" href="/logout">Sair</a>
+				</div>
+			</div>
+		</nav>
+		<div th:fragment="js">
+			<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+			<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+		</div>
+	</body>
+</html>

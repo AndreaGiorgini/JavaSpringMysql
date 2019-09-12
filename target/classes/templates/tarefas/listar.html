@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+		<title>::Gerenciador de Tarefas</title>
+		<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+	</head>
+	<body>
+		<div th:replace="fragments/fragments :: cabecalho"></div>
+		<div class="container">
+			<div style="margin: 10px;"><h3>Lista de Tarefas</h3></div>
+			<div style="margin: 10px; text-align: right"><a href="/tarefas/inserir" class="btn btn-success">Nova Tarefa</a></div>
+			<div th:each="tarefa: ${tarefas}" style="margin: 10px">
+				<div class="card bg-light mb-3">
+					<div class="card-header">
+						<div class='row'>
+							<div class="form-group col-md-6"><h4><span th:text="${tarefa.titulo}"></span></h4></div>
+							<div class="form-group col-md-6 mt-1" align='right'>
+								<span class="btn alert-danger" th:if="${!tarefa.fechada}">Aberta</span>
+								<span class="btn btn-success" th:if="${tarefa.fechada}">Fechada</span>
+							</div>
+						</div>
+					</div>
+					<div class="card-body">
+						<div class='row'>
+							<div class="form-group col-md-2"><span th:text="${tarefa.os}"></span></div>
+							<div class="form-group col-md-2"><span th:text="${#dates.format(tarefa.data, 'dd/MM/yyyy')}"></span></div>
+							<div class="form-group col-md-5"><span th:text="${tarefa.cliente}"></span></div>
+							<div class="form-group col-md-3" align='right'>
+								<span th:if="${!tarefa.fechada}">
+								 <a th:href="@{/tarefas/alterar/{id}(id=${tarefa.id})}">Alterar</a>
+								 | <a th:href="@{/tarefas/concluir/{id}(id=${tarefa.id})}">Concluir</a>
+								 | <a th:href="@{/tarefas/excluir/{id}(id=${tarefa.id})}">Excluir</a>
+								</span>
+							</div>
+						</div>
+						<div class='row'>
+							<div class="form-group col-md-12"><span th:text="${'Descrição: '+ tarefa.descricao}"></span></div>	
+						</div>				
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:replace="fragments/fragments :: js"></div>
+	</body>
+</html>

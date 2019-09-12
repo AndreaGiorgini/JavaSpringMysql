@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+		<title>::Gerenciador de Tarefas</title>
+		<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+	</head>
+	<body>
+		<div th:replace="fragments/fragments :: cabecalho"></div>
+		<div class="container">
+			<div style="margin: 10px;"><h3>Nova Tarefa</h3></div>
+			<form class="form-horizontal" action="/tarefas/inserir" method="Post" th:object="${tarefa}">
+				<div class="row">
+					<div class="form-group col-md-6">
+						<label for="titulo">Título: </label>
+						<input type="text" required maxlength='50' class="form-control" id="titulo" th:field="*{titulo}">
+						<div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('titulo')}"><label th:errors="*{titulo}" class="validation-message"></label></div>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="descricao">Descrição: </label>
+						<input type="text" required maxlength='100' class="form-control" id="descricao" th:field="*{descricao}">
+						<div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('descricao')}"><label th:errors="*{descricao}" class="validation-message"></label></div>
+					</div>		
+				</div>
+				<div class="row">
+					<div class="form-group col-md-6">
+						<label for="os">O.S.: </label>
+						<input type="text" required maxlength='10' class="form-control" id="os" th:field="*{os}">
+						<div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('os')}"><label th:errors="*{os}" class="validation-message"></label></div>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="cliente">Cliente: </label>
+						<input type="text" required maxlength='50' class="form-control" id="cliente" th:field="*{cliente}">
+						<div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('cliente')}"><label th:errors="*{cliente}" class="validation-message"></label></div>
+					</div>		
+				</div>
+				<button type="submit" class="btn btn-primary">Inserir</button>
+			</form>		
+		</div>
+		<div th:replace="fragments/fragments :: js"></div>
+	</body>
+</html>

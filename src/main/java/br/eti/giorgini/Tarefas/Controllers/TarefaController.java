@@ -2,6 +2,7 @@ package br.eti.giorgini.Tarefas.Controllers;
 
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.eti.giorgini.Tarefas.Models.Tarefa;
+import br.eti.giorgini.Tarefas.Models.Usuario;
+import br.eti.giorgini.Tarefas.Services.UsuarioService;
 import br.eti.giorgini.Tarefas.repositories.TarefaRepository;
 
 @Controller
@@ -23,11 +26,16 @@ public class TarefaController {
 	@Autowired
 	private TarefaRepository tarefaRepository;
 	
+	@Autowired
+	private UsuarioService usuarioService;
+	
 	@GetMapping("/listar")
-	public ModelAndView listar() {
+	public ModelAndView listar(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("tarefas/listar");
-		mv.addObject("tarefas", tarefaRepository.findAll());
+		String usuarioLogin = request.getUserPrincipal().getName();
+		Usuario usuarioLogado = usuarioService.encontrarPorLogin(usuarioLogin);
+		mv.addObject("tarefas", tarefaRepository.carregarTarefasPorUsuario(usuarioLogado.getId()));
 		return mv;
 	}
 
@@ -40,15 +48,18 @@ public class TarefaController {
 	}
 
 	@PostMapping("/inserir")
-	public ModelAndView inserir(@Valid Tarefa tarefa, BindingResult result) {
+	public ModelAndView inserir(@Valid Tarefa tarefa, BindingResult result, HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
 		if (result.hasErrors()) {
 			mv.setViewName("tarefas/inserir");
 			mv.addObject(tarefa);
 		} else {
-			mv.setViewName("redirect:/tarefas/listar/");
+			String usuarioLogin = request.getUserPrincipal().getName();
+			Usuario usuarioLogado = usuarioService.encontrarPorLogin(usuarioLogin);
+			tarefa.setUsuario(usuarioLogado);
 			tarefa.setData(new Date());
 			tarefaRepository.save(tarefa);
+			mv.setViewName("redirect:/tarefas/listar/");
 		}
 		return mv;
 	}
@@ -69,9 +80,9 @@ public class TarefaController {
 			mv.setViewName("tarefas/alterar");
 			mv.addObject(tarefa);
 		} else {
-			mv.setViewName("redirect:/tarefas/listar/");
 			tarefa.setData(new Date());
 			tarefaRepository.save(tarefa);
+			mv.setViewName("redirect:/tarefas/listar/");
 		}
 		return mv;
 	}

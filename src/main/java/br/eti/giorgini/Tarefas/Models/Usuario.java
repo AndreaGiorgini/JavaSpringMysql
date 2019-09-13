@@ -1,13 +1,14 @@
 package br.eti.giorgini.Tarefas.Models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -40,6 +41,9 @@ public class Usuario {
 	@NotNull(message = "Preencha o campo de e-mail")
 	@Length(max = 50, min = 10, message = "O e-mail deve conter entre 10 e 50 caracteres")
 	private String email;
+
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+	private List<Tarefa> tarefa;
 
 	public Long getId() {
 		return id;
@@ -79,6 +83,14 @@ public class Usuario {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<Tarefa> getTarefa() {
+		return tarefa;
+	}
+
+	public void setTarefa(List<Tarefa> tarefa) {
+		this.tarefa = tarefa;
 	}
 
 }

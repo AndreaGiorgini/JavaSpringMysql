@@ -1,16 +1,15 @@
 package br.eti.giorgini.Tarefas.Models;
 
 import java.util.Date;
-//import java.util.HashSet;
-//import java.util.Set;
 
-//import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-//import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -30,29 +29,37 @@ public class Tarefa {
 	private Boolean fechada = false;
 
 	@Column(name = "tarefaData", nullable = false)
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date data;
 
 	@Column(name = "tarefaDescricao", length = 255, nullable = false)
-	@NotNull(message="Preencha o campo de descrição da Tarefa")
-	@Length(max=100, min=10, message="A descrição deve conter entre 10 e 100 caracteres")
+	@NotNull(message = "Preencha o campo de descrição da Tarefa")
+	@Length(max = 100, min = 10, message = "A descrição deve conter entre 10 e 100 caracteres")
 	private String descricao;
 
 	@Column(name = "tarefaOs", length = 10, nullable = false)
-	@NotNull(message="Preencha o campo de Ordem de Serviço")
-	@Length(max=10, min=5, message="O numero da Ordem de Serviço deve conter entre 5 e 10 caracteres")
+	@NotNull(message = "Preencha o campo de Ordem de Serviço")
+	@Length(max = 10, min = 5, message = "O numero da Ordem de Serviço deve conter entre 5 e 10 caracteres")
 	private String os;
 
 	@Column(name = "tarefaCliente", length = 255, nullable = false)
-	@NotNull(message="Preencha o campo de Cliente")
-	@Length(max=50, min=5, message="O cliente deve conter entre 5 e 50 caracteres")
+	@NotNull(message = "Preencha o campo de Cliente")
+	@Length(max = 50, min = 5, message = "O cliente deve conter entre 5 e 50 caracteres")
 	private String cliente;
 
 	@Column(name = "tarefaTitulo", length = 255, nullable = false)
-	@NotNull(message="Preencha o campo de Título")
-	@Length(max=50, min=5, message="O título deve conter entre 5 e 50 caracteres")
+	@NotNull(message = "Preencha o campo de Título")
+	@Length(max = 50, min = 5, message = "O título deve conter entre 5 e 50 caracteres")
 	private String titulo;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "usuarioId")
+	private Usuario usuario;
 	
+//	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+//	@JoinColumn(name = "usuarioId", updatable = false)
+//	private Usuario usuario;
+
 	public Long getId() {
 		return id;
 	}
@@ -107,6 +114,14 @@ public class Tarefa {
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 }
